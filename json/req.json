@@ -1,0 +1,10 @@
+[
+    {
+        "url": "https://letovo.ru/api/page/get_by_url",
+        "body": "{\"url\":\"komanda/komanda\"}",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "json": true
+    }
+]

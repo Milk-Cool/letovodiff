@@ -1,0 +1,28 @@
+{
+  "name": "letovodiff",
+  "version": "0.1.0",
+  "description": "Checks differences in Letovo services",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Milk-Cool/letovodiff.git"
+  },
+  "keywords": [
+    "letovo",
+    "diff",
+    "watcher"
+  ],
+  "author": "Milk_Cool",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Milk-Cool/letovodiff/issues"
+  },
+  "homepage": "https://github.com/Milk-Cool/letovodiff#readme",
+  "dependencies": {
+    "diff": "^5.2.0",
+    "node-telegram-bot-api": "^0.65.1"
+  }
+}
