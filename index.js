@@ -8,8 +8,12 @@ const req = require("./json/req.json")
 
 let last = [];
 
-const send = (url, msg) => {
-    bot.sendMessage(ID, `${url}\n\n\`\`\`diff\n${msg}\n\`\`\``, { "parse_mode": "Markdown" });
+const send = (obj, msg) => {
+    msg = `${obj.url}\n${obj.body ? "`" + obj.body + "`\n" : ""}\n\`\`\`diff\n${msg}\n\`\`\``;
+    for(let i = 0; i < msg.length; i += 1000) {
+        let chunk = msg.slice(i, i + 1000);
+        bot.sendMessage(ID, `${chunk.startsWith("```") ? "" : "```diff"}${chunk}${chunk.endsWith("```") ? "" : "```"}`, { "parse_mode": "Markdown" });
+    }
 }
 const checkOne = async (obj, cb) => {
     const options = obj.body ? {
@@ -24,20 +28,21 @@ const checkOne = async (obj, cb) => {
     let d = obj.bin ? Buffer.from(await f.arrayBuffer()) : await f.text();
     if(obj.json)
         d = JSON.stringify(JSON.parse(d), null, 2);
-    if(!last?.[obj.url])
-        return last[obj.url] = d;
+    const k = obj.url + (obj.body ? ":::" + obj.body : "");
+    if(!last?.[k])
+        return last[k] = d;
     if(obj.bin) {
-        if(last[obj.url] == d) cb(obj.url, "+ Binary diff");
+        if(last[k] == d) cb(obj, "+ Binary diff");
         return;
     }
     let diffstr = "";
-    const diff = Diff.diffLines(last[obj.url], d);
-    last[obj.url] = d;
+    const diff = Diff.diffLines(last[k], d);
+    last[k] = d;
     for(let i of diff) {
         if(!i.added && !i.removed) continue;
         diffstr += `${i.added ? "+" : "-"} ${i.value}\n`;
     }
-    if(diffstr) cb(obj.url, diffstr);
+    if(diffstr) cb(obj, diffstr);
 }
 const check = async () => {
     for(let i of req) {
