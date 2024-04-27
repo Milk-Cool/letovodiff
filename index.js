@@ -47,7 +47,7 @@ const check = async () => {
 
 setTimeout(check);
 // setInterval(check, 30 * 60 * 1000);
-setInterval(check, 5 * 1000);
+setInterval(check, 30 * 60 * 1000);
 
 require("http").createServer((req, res) => {
     res.writeHead(200);
