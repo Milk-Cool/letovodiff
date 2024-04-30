@@ -33,5 +33,13 @@
     },
     {
         "url": "https://elk.letovo.ru/js/app.js"
+    },
+    {
+        "url": "https://student.letovo.ru/document/2.0%20Student%20Code%20of%20Conduct%20SPV.pdf",
+        "bin": true
+    },
+    {
+        "url": "https://student.letovo.ru/document/Little%20Boarding%20Booklet%202023-2024.pdf",
+        "bin": true
     }
 ]
