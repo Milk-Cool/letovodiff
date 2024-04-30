@@ -1,7 +1,7 @@
 const Diff = require("diff");
 const TelegramBot = require("node-telegram-bot-api");
 
-const { TOKEN, ID } = process.env;
+const { TOKEN, ID, LOG } = process.env;
 const bot = new TelegramBot(TOKEN, { "polling": false });
 
 const req = require("./json/req.json")
@@ -16,6 +16,7 @@ const send = (obj, msg) => {
     }
 }
 const checkOne = async (obj, cb) => {
+    if(LOG) console.log("Checking", obj.url);
     const options = obj.body ? {
         "method": "POST",
         "body": obj.body,
@@ -37,6 +38,7 @@ const checkOne = async (obj, cb) => {
     }
     let diffstr = "";
     const diff = Diff.diffLines(last[k], d);
+    if(LOG) console.log(diff.filter(x => x.added || x.removed));
     last[k] = d;
     for(let i of diff) {
         if(!i.added && !i.removed) continue;
@@ -45,13 +47,15 @@ const checkOne = async (obj, cb) => {
     if(diffstr) cb(obj, diffstr);
 }
 const check = async () => {
+    if(LOG) console.log("Checking all...");
     for(let i of req) {
         await checkOne(i, send).catch(console.error);
     }
+    if(LOG) console.log("Done checking, waiting now...");
 }
 
 setTimeout(check);
-// setInterval(check, 30 * 60 * 1000);
+// setInterval(check, 5 * 1000);
 setInterval(check, 30 * 60 * 1000);
 
 require("http").createServer((req, res) => {
