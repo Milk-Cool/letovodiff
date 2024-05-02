@@ -8,8 +8,6 @@ const req = require("./json/req.json")
 
 let last = [];
 
-const delay200 = () => new Promise(resolve => setTimeout(resolve, 200));
-
 const send = async (obj, msg) => {
     msg = `${obj.url}\n${obj.body ? "`" + obj.body + "`\n" : ""}\n\`\`\`diff\n${msg}\n\`\`\``;
     for(let i = 0; i < msg.length; i += 1000) {
@@ -46,13 +44,12 @@ const checkOne = async (obj, cb) => {
         if(!i.added && !i.removed) continue;
         diffstr += `${i.added ? "+" : "-"} ${i.value}\n`;
     }
-    if(diffstr) cb(obj, diffstr);
+    if(diffstr) await cb(obj, diffstr);
 }
 const check = async () => {
     if(LOG) console.log("Checking all...");
     for(let i of req) {
         await checkOne(i, send).catch(console.error);
-        await delay200();
     }
     if(LOG) console.log("Done checking, waiting now...");
 }
