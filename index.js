@@ -12,7 +12,7 @@ const send = async (obj, msg) => {
     msg = `${obj.url}\n${obj.body ? "`" + obj.body + "`\n" : ""}\n\`\`\`diff\n${msg}\n\`\`\``;
     for(let i = 0; i < msg.length; i += 1000) {
         let chunk = msg.slice(i, i + 1000);
-        await bot.sendMessage(ID, `${chunk.startsWith("```") ? "" : "```diff"}${chunk}${chunk.endsWith("```") ? "" : "```"}`, { "parse_mode": "Markdown" });
+        await bot.sendMessage(ID, `${chunk.startsWith("```") ? "" : "```diff\n"}${chunk}${chunk.endsWith("```") ? "" : "\n```"}`, { "parse_mode": "Markdown" });
     }
 }
 const checkOne = async (obj, cb) => {
