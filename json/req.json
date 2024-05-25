@@ -35,11 +35,26 @@
         "url": "https://elk.letovo.ru/js/app.js"
     },
     {
+        "url": "https://canvas.letovo.ru/custom/scripts/letovo-v1.js"
+    },
+    {
         "url": "https://student.letovo.ru/document/2.0%20Student%20Code%20of%20Conduct%20SPV.pdf",
         "bin": true
     },
     {
         "url": "https://student.letovo.ru/document/Little%20Boarding%20Booklet%202023-2024.pdf",
         "bin": true
+    },
+    {
+        "url": "https://student.letovo.ru/assets/delta/js/delta.js"
+    },
+    {
+        "url": "https://student.letovo.ru/js/letovo.js"
+    },
+    {
+        "url": "https://student.letovo.ru/js/student_auth.js"
+    },
+    {
+        "url": "https://i.letovo.ru/assets/delta/js/delta.js"
     }
 ]
