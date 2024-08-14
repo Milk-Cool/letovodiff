@@ -33,7 +33,7 @@ const checkOne = async (obj, cb) => {
     if(!last?.[k])
         return last[k] = d;
     if(obj.bin) {
-        if(!Buffer.compare(last[k], d)) cb(obj, "+ Binary diff");
+        if(Buffer.compare(last[k], d)) cb(obj, "+ Binary diff");
         return;
     }
     let diffstr = "";
