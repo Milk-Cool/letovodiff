@@ -4,15 +4,48 @@ const TelegramBot = require("node-telegram-bot-api");
 const { TOKEN, ID, LOG } = process.env;
 const bot = new TelegramBot(TOKEN, { "polling": false });
 
+// https://github.com/telegraf/telegraf/issues/1242#issuecomment-1489968508
+const SPECIAL_CHARS = [
+    '\\',
+    '_',
+    '*',
+    '[',
+    ']',
+    '(',
+    ')',
+    '~',
+    '`',
+    '>',
+    '<',
+    '&',
+    '#',
+    '+',
+    '-',
+    '=',
+    '|',
+    '{',
+    '}',
+    '.',
+    '!'
+];
+  
+const escapeMarkdown = (text) => {
+    SPECIAL_CHARS.forEach(char => (text = text.replaceAll(char, `\\${char}`)));
+    return text;
+}
+
 const req = require("./json/req.json")
 
 let last = {};
 
+const chl = 1000;
+
 const send = async (obj, msg) => {
-    msg = `${obj.url}\n${obj.body ? "`" + obj.body + "`\n" : ""}\n\`\`\`diff\n${msg}\n\`\`\``;
-    for(let i = 0; i < msg.length; i += 1000) {
-        let chunk = msg.slice(i, i + 1000);
-        await bot.sendMessage(ID, `${chunk.startsWith("```") ? "" : "```diff\n"}${chunk}${chunk.endsWith("```") ? "" : "\n```"}`, { "parse_mode": "Markdown" });
+    msg = `${obj.url}\n${obj.body ? "`" + obj.body + "`\n" : ""}\n\`\`\`diff\n${msg.replaceAll("```", "")}\n\`\`\``;
+    console.log(msg);
+    for(let i = 0; i < msg.length; i += chl) {
+        let chunk = msg.slice(i, i + chl);
+        await bot.sendMessage(ID, `${!chunk.startsWith("```") && i > 0 ? "```diff\n" : ""}${chunk}${chunk.endsWith("```") ? "" : "\n```"}`, { "parse_mode": "MarkdownV2" });
     }
 }
 const checkOne = async (obj, cb) => {
