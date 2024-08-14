@@ -6,7 +6,7 @@ const bot = new TelegramBot(TOKEN, { "polling": false });
 
 const req = require("./json/req.json")
 
-let last = [];
+let last = {};
 
 const send = async (obj, msg) => {
     msg = `${obj.url}\n${obj.body ? "`" + obj.body + "`\n" : ""}\n\`\`\`diff\n${msg}\n\`\`\``;
@@ -33,7 +33,7 @@ const checkOne = async (obj, cb) => {
     if(!last?.[k])
         return last[k] = d;
     if(obj.bin) {
-        if(last[k] == d) cb(obj, "+ Binary diff");
+        if(!Buffer.compare(last[k], d)) cb(obj, "+ Binary diff");
         return;
     }
     let diffstr = "";
